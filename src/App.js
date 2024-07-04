@@ -106,7 +106,7 @@ function App() {
             />
           }
         />
-        <Route
+        {/* <Route
           path="/MyNFTs"
           element={
             <MyNFTs
@@ -115,7 +115,7 @@ function App() {
               account={account}
             />
           }
-        />
+        /> */}
         <Route
           path="/UploadNFTForm"
           element={<UploadNFTForm contract={contract} />}
