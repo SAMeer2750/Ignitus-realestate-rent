@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import UploadNFTForm from "./pages/UploadNFTForm";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/navbar";
-import MyNFTs from "./pages/MyNFTs";
 import { contractAddress, tokenAbi, contractFactoryAbi } from "./constant";
 import { ethers } from "ethers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
