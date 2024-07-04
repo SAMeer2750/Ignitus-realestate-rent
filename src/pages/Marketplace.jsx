@@ -126,7 +126,7 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
             <>
               <div className="pageTitle">
                 <p className="heading">
-                  "Step into the captivating realm of RealEstate Rent, where breathtaking real-estate NFTs awaits you to rent them."
+                  "Step into the captivating realm of RealEstate Rent, where breathtaking real-estate NFTs awaits you to rent them." 
                 </p>
               </div>
               <p className="connectWalletMsg">
