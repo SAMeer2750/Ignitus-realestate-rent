@@ -23,11 +23,11 @@ function Navbar({ connectWallet, account }) {
               <span class="text">Marketplace</span>
             </button>
           </Link>
-          <Link to="/MyNFTs" style={{ textDecoration: "none" }}>
+          {/* <Link to="/MyNFTs" style={{ textDecoration: "none" }}>
             <button>
               <span class="text">My NFT(s)</span>
             </button>
-          </Link>
+          </Link> */}
           <Link to="/UploadNFTForm" style={{ textDecoration: "none" }}>
             <button>
               <span class="text">Mint & List</span>

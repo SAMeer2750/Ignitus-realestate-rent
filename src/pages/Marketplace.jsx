@@ -3,24 +3,39 @@ import NFTcard from "../components/NFTcard";
 import "./Marketplace.css";
 import NFTmodal from "./NFTmodal";
 import axios from "axios";
+import { ethers } from "ethers";
 
-function Marketplace({ contract, isConnected, account }) {
+function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
   const [nfts, setNfts] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [selectedNFT, setSelectedNFT] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (contract) {
-      getAllNFTs();
+      getAllTokenContracts();
     }
   }, [contract, isConnected, account]);
 
-  const getAllNFTs = async () => {
+  useEffect(() => {
+    fetchNFTs();
+  }, [collections]);
+
+  const getAllTokenContracts = async () => {
     setIsLoading(true);
-    const tx = await contract.getAllNFTs();
-    setNfts(tx);
+    const tx = await contract.getAllProperty();
+    setCollections(tx);
     setIsLoading(false);
   };
+
+  const getTokenInstance= async (tokenAddress)=>{
+    const tokenInstance = new ethers.Contract(
+        tokenAddress,
+        tokenAbi,
+        signer
+      );
+    return tokenInstance;
+  }
 
   const fetchNFTMetadata = async (tokenURI) => {
     try {
@@ -32,30 +47,36 @@ function Marketplace({ contract, isConnected, account }) {
     }
   };
 
-  useEffect(() => {
-    const fetchNFTDetails = async () => {
-      setIsLoading(true);
-      const updatedNFTs = await Promise.all(
-        nfts.map(async (nft) => {
-          const uri = await contract.tokenURI(nft.tokenId);
+  const fetchNFTs = async () => {
+    if (collections.length > 0 ) {
+      await fetchNFTDetails();
+    }
+  };
+
+  const fetchNFTDetails = async () => {
+    setIsLoading(true);
+
+    const updatedNFTs = await Promise.all(
+      collections.map(async (address,index)=>{
+          const tokenInstance = await getTokenInstance(address)
+          const uri = await tokenInstance.getBaseURI();
+          console.log(uri);
           const metadata = await fetchNFTMetadata(uri);
-          console.log("Metadata for tokenId", nft.tokenId, ":", metadata);
-          return { ...nft, metadata };
-        })
-      );
-      console.log("Updated NFTs:", updatedNFTs);
-      setNfts(updatedNFTs);
-      setIsLoading(false);
-    };
+          return {metadata,address};
+      })
+    )
 
-    const fetchNFTs = async () => {
-      if (nfts.length > 0 && !nfts[0].metadata) {
-        await fetchNFTDetails();
-      }
-    };
+    console.log("Updated NFTs:", updatedNFTs);
+    setNfts(updatedNFTs);
+    setIsLoading(false);
+  };
 
-    fetchNFTs();
-  }, [nfts]);
+  const getOwnerOfCollection = async(tokenAddress)=>{
+    const tokenInstance = await getTokenInstance(tokenAddress)
+    const owner = await tokenInstance.ownerOf(0);
+    console.log(owner);
+    return owner;
+  }
 
   return (
     <>
@@ -82,17 +103,18 @@ function Marketplace({ contract, isConnected, account }) {
                 nfts
                   .slice(0)
                   .reverse()
-                  .map((nft) => (
-                    <React.Fragment key={nft.tokenId}>
+                  .map((nft,index) => (
+                    <React.Fragment key={index}>
                       {isConnected && nft.metadata ? (
                         <NFTcard
-                          id={nft.tokenId.toString()}
-                          title={nft.metadata.name}
-                          description={nft.metadata.description}
+                          symbol={nft.metadata.symbol.toString()}
+                          name={nft.metadata.name.toString()}
+                          description={nft.metadata.description.toString()}
                           img={`https://ipfs.io/ipfs/${nft.metadata.imageCID}`}
-                          price={nft.price.toString()}
-                          seller={nft.seller.toString()}
+                          totalSupply={nft.metadata.totalSupply.toString()}
+                          address={nft.address.toString()}
                           setSelectedNFT={setSelectedNFT}
+                          getOwnerOfCollection={getOwnerOfCollection}
                           nft={nft}
                         />
                       ) : null}

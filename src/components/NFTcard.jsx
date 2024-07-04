@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./NFTcard.css";
 
 function NFTcard({
-  id,
-  title,
+  symbol,
+  name,
   description,
   img,
-  price,
-  seller,
+  totalSupply,
+  address,
   setSelectedNFT,
+  getaddressOfCollection,
   nft,
 }) {
   const handleClick = () => {
     setSelectedNFT(nft);
   };
+
+  const[owner, setOwner]= useState();
 
   return (
     <div className="NFTcard" onClick={handleClick}>
@@ -23,14 +26,14 @@ function NFTcard({
       </div>
       <div className="details">
         <div className="left">
-          <p className="title">{title}</p>
+          <p className="title">{name}</p>
           <p className="address">
-            {seller.slice(0, 6) + "..." + seller.slice(38, 42)}
+            {address.slice(0, 6) + "..." + address.slice(38, 42)}
           </p>
         </div>
         <div className="right">
-          <p className="id">#{id}</p>
-          <p className="price">{price/1000000000000000000} MATIC</p>
+          <p className="id">#{symbol}</p>
+          <p className="price">{totalSupply} Fractions</p>
         </div>
       </div>
     </div>
