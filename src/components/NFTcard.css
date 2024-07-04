@@ -1,0 +1,73 @@
+.NFTcard {
+  height: 45vh;
+  background-color: #464646;
+  width: 35vh;
+  border-radius: 13px;
+  padding: 0.75vh;
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+  box-shadow: 2px 2px 25px 2px rgba(206, 206, 206, 0.11),
+    -2px -2px 25px 2px rgba(206, 206, 206, 0.11);
+}
+
+.NFTcard .image {
+  height: 70%;
+  border-radius: 10px;
+}
+
+.NFTcard img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.NFTcard .details {
+  height: 30%;
+  background-color: #202021;
+  border-radius: 0px 0px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.NFTcard .details p {
+  margin: 0;
+}
+
+.NFTcard .details .left {
+  padding-left: 1.5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.NFTcard .details .right {
+  padding-right: 1.5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.NFTcard .details p.title {
+  color: #cecece;
+  font-size: 3.8vh;
+  font-weight: 500;
+}
+
+.NFTcard .details p.address{
+    font-size: 1.8vh;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.NFTcard .details p.id{
+    color: #cecece;
+    font-size: 3vh;
+    border: 1px solid #cecece;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.NFTcard .details p.price{
+    color: rgba(206, 206, 206, 0.58);
+    font-size: 2.75vh;
+}

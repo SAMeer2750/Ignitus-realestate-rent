@@ -1,0 +1,123 @@
+.Marketplace {
+  width: 100%;
+  padding-top: 15.5vh;
+  background-color: #171717;
+  min-height: 100vh;
+}
+
+.Marketplace .trending{
+  color: #cecece;
+  margin-left: 1.5vh;
+  margin-bottom: 0vh;
+  margin-top: 1.5vh;
+  font-size: 30px;
+  font-weight: 490;
+}
+
+.Marketplace .NFTitems .pageTitle{
+  display: flex;
+    justify-content: center;
+}
+
+.Marketplace .NFTitems .pageTitle .heading{
+  text-align: center;
+  width: 80%;
+  font-size: 5vh;
+  font-weight: 350px;
+  color: #cecece;
+  margin-top: 4vh;
+}
+
+.Marketplace .NFTitems .connectWalletMsg{
+  text-align: center;
+  padding: 1.5vh 2.5vh 1.5vh 2.5vh ;
+  font-size: 22px;
+  font-weight: 400px;
+  color: #a53ff9;
+  border: solid #a53ff9 2px;
+  border-radius: 9px;
+}
+
+.Marketplace .NFTitems {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.Marketplace .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 15;
+  position: fixed;
+}
+
+.spinner {
+  width: 70.4px;
+  height: 70.4px;
+  --clr: rgb(247, 197, 159);
+  --clr-alpha: rgb(247, 197, 159, 0.1);
+  animation: spinner 1.6s infinite ease;
+  transform-style: preserve-3d;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
+
+.spinner > div {
+  background-color: var(--clr-alpha);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border: 3.5px solid var(--clr);
+}
+
+.spinner div:nth-of-type(1) {
+  transform: translateZ(-35.2px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+  transform: rotateY(-270deg) translateX(50%);
+  transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+  transform: rotateY(270deg) translateX(-50%);
+  transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+  transform: rotateX(90deg) translateY(-50%);
+  transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+  transform: rotateX(-90deg) translateY(50%);
+  transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+  transform: translateZ(35.2px);
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+  }
+
+  50% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+  }
+
+  100% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+  }
+}

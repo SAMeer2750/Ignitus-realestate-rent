@@ -1,0 +1,221 @@
+.NFTmodal {
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-height: calc(100vh - 10vh);
+  overflow-y: auto;
+  background-color: #171717;
+  z-index: 9999;
+  /* border-radius: 0px 0px 20px 20px; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: 0px;
+  border: solid 3px rgba(206, 206, 206, 0.50);
+  border-radius: 20px;
+  color: white;
+  padding: 4vh;
+}
+
+.NFTmodal .upperContent {
+    display: flex;
+    align-items: flex-start;
+    /* justify-content: space-between; */
+}
+
+.NFTmodal .upperContent .left img{
+    height: 65vh;
+    width: 65vh;
+    margin-left: 1.5vh;
+    border-radius: 20px;
+    border:solid 2.5px rgba(206, 206, 206, 0.25)
+}
+
+.NFTmodal .upperContent .right{
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
+
+.NFTmodal .upperContent .right .title{
+  font-weight: 600;
+  font-size: 45px;
+  color: #CECECE;
+  line-height: 54px;
+  margin-top: 0vh;
+  margin-bottom: 1vh;
+}
+
+.NFTmodal .upperContent .right p.price{
+  font-weight: 610;
+  font-size: 1.5rem;
+  margin-top: 0vh;
+  margin-bottom: 0;
+}
+
+.NFTmodal .upperContent .right .column{
+  display: flex;
+  flex-direction: row;
+}
+
+.NFTmodal .upperContent .right .column .column1{
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1vh;
+}
+
+.NFTmodal .upperContent .right .column .column2 {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1vh;  
+  margin-left: 6vh;
+}
+
+.NFTmodal .upperContent .right .column .column2 .c2Content {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 16px;
+  color: #CECECE;
+  margin: 0px;
+  margin-bottom: 1.5vh;
+}
+
+.NFTmodal .upperContent .right .column .column1 .c1Content {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 16px;
+  color: #CECECE;
+  margin: 0px;
+  margin-bottom: 1.5vh;
+}
+
+
+.NFTmodal .upperContent .right .price {
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 30px;
+  color: #CECECE;
+  margin-top: 0.5vh;
+  margin-bottom: 2vh;
+}
+
+.NFTmodal .upperContent .right .buyOrSell{
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.NFTmodal .upperContent .right .address{
+  font-weight: 200;
+  font-size: 16px;
+  line-height: 18px;
+  color: #CECECE; 
+  margin-top: 0vh;
+  margin-bottom: 2vh;
+}
+
+.NFTmodal .upperContent .right .description{
+  font-weight: 200;
+  font-size: 17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  color: #CECECE;
+}
+
+th,td {
+  border-bottom: 1px solid rgba(206, 206, 206, 0.25);
+  text-align: center;
+  height: 4vh;
+  align-items: center;
+  color: #CECECE;
+}
+
+table{
+  width: 100%;
+}
+
+.botton-buy {
+  padding-left: 33px;
+  padding-right: 33px;
+  padding-bottom: 13.5px;
+  padding-top: 13.5px;
+  border-radius: 10px;
+  background: #62ff00;
+  border: none;
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.4s;
+  margin-left: 1vw;
+}
+
+.botton-buy:hover {
+  box-shadow: 7px 5px 56px -14px #00ff33;
+}
+
+.botton-buy:active {
+  transform: scale(0.97);
+  box-shadow: 7px 5px 56px -10px #C3D900;
+}
+
+.botton-relist {
+  padding-left: 33px;
+  padding-right: 33px;
+  padding-bottom: 13.5px;
+  padding-top: 13.5px;
+  border-radius: 10px;
+  background: #FF7D00;
+  border: none;
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.botton-relist:hover {
+  box-shadow: 7px 5px 56px -14px #FF8900;
+}
+
+.botton-relist:active {
+  transform: scale(0.97);
+  box-shadow: 7px 5px 56px -10px #FF8900;
+}
+
+.update-price{
+  margin-left: 1.5vh;
+}
+
+input.Price-input {
+  width: 40%;
+  background-color: #595959;
+  border: 1.5px solid #cecece;
+  border-radius: 11px;
+  height: 4.6vh;
+  color: white;
+  font-size: 2vh;
+  text-align: center;
+}
+
+.NFTmodal .upperContent .right .relistItems{
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #181717;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  border: solid transparent 2px;
+  background-clip: content-box;
+  background-color: #464646;
+}
