@@ -4,7 +4,7 @@ import UploadNFTForm from "./pages/UploadNFTForm";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/navbar";
 import MyNFTs from "./pages/MyNFTs";
-import { contractAddress, contractAbi, contractFactoryAbi } from "./constant";
+import { contractAddress, tokenAbi, contractFactoryAbi } from "./constant";
 import { ethers } from "ethers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -20,19 +20,19 @@ function App() {
     setupAccountChangeHandler();
   }, []);
 
-  const networks = {
-    polygon: {
-      chainId: `0x${Number(80001).toString(16)}`,
-      chainName: "Polygon Testnet",
-      nativeCurrency: {
-        name: "MATIC",
-        symbol: "MATIC",
-        decimals: 18,
-      },
-      rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
-      blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
-    },
-  };
+  // const networks = {
+  //   polygon: {
+  //     chainId: `0x${Number(80001).toString(16)}`,
+  //     chainName: "Polygon Testnet",
+  //     nativeCurrency: {
+  //       name: "MATIC",
+  //       symbol: "MATIC",
+  //       decimals: 18,
+  //     },
+  //     rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+  //     blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+  //   },
+  // };
 
   async function loadBcData() {
     if (window.ethereum) {
@@ -45,7 +45,7 @@ function App() {
       setSigner(signer);
       const contractInstance = new ethers.Contract(
         contractAddress,
-        contractAbi,
+        contractFactoryAbi,
         signer
       );
       setContract(contractInstance);
@@ -101,12 +101,14 @@ function App() {
           element={
             <Marketplace
               contract={contract}
+              tokenAbi={tokenAbi}
               isConnected={isConnected}
               account={account}
+              signer={signer}
             />
           }
         />
-        <Route
+        {/* <Route
           path="/MyNFTs"
           element={
             <MyNFTs
@@ -115,7 +117,7 @@ function App() {
               account={account}
             />
           }
-        />
+        /> */}
         <Route
           path="/UploadNFTForm"
           element={<UploadNFTForm contract={contract} />}

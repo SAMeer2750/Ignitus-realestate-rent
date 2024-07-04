@@ -5,8 +5,9 @@ import "./UploadNFTForm.css";
 
 const UploadNFTForm = ({ contract }) => {
   const [nftName, setNFTName] = useState("");
+  const [nftSymbol, setNFTSymbol] = useState("");
   const [nftDescription, setNFTDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [totalSupply, setTotalSupply] = useState();
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,17 +31,19 @@ const UploadNFTForm = ({ contract }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            pinata_api_key: "8f66ef808e1b48daa5eb",
+            pinata_api_key: "74e28c80a910f49983c3",
             pinata_secret_api_key:
-              "d8b0e1b3e229c52031df11d19542cf202a153e52e995e48d548f10886c6a9813",
+              "ae229495d225b4e8d3cc9860f0720bc74795d81a961cf630ca45e52f48151ce3",
           },
         }
       );
 
       const nftData = {
         name: nftName,
+        symbol: nftSymbol,
         description: nftDescription,
         imageCID: imageUploadResponse.data.IpfsHash,
+        totalSupply: totalSupply
       };
 
       const nftUploadResponse = await axios.post(
@@ -48,26 +51,33 @@ const UploadNFTForm = ({ contract }) => {
         nftData,
         {
           headers: {
-            pinata_api_key: "8f66ef808e1b48daa5eb",
+            pinata_api_key: "74e28c80a910f49983c3",
             pinata_secret_api_key:
-              "d8b0e1b3e229c52031df11d19542cf202a153e52e995e48d548f10886c6a9813",
+              "ae229495d225b4e8d3cc9860f0720bc74795d81a961cf630ca45e52f48151ce3",
           },
         }
       );
 
-      let listingPrice = await contract.getListPrice();
-      listingPrice = listingPrice.toString();
-      const tx = await contract.createToken(
+      // let listingPrice = await contract.getListPrice();
+      // listingPrice = listingPrice.toString();
+      // const tx = await contract.createToken(
+      //   nftUploadResponse.data.IpfsHash,
+      //   ethers.utils.parseEther(price),
+      //   { gasLimit: 900000, value: listingPrice }
+      // );
+      const tx = await contract.addProperty(
+        nftName,
+        nftSymbol,
         nftUploadResponse.data.IpfsHash,
-        ethers.utils.parseEther(price),
-        { gasLimit: 900000, value: listingPrice }
-      );
+        totalSupply
+      )
 
       await tx.wait();
 
       setNFTName("");
       setNFTDescription("");
-      setPrice("");
+      setTotalSupply("");
+      setNFTSymbol("");
       setImage(null);
     } catch (error) {
       console.error("Error uploading and minting NFT:", error);
@@ -92,6 +102,17 @@ const UploadNFTForm = ({ contract }) => {
           </label>
           <div className="space"></div>
           <label>
+            <p className="head"> NFT Symbol : </p>
+            <input
+              className="input"
+              type="text"
+              value={nftSymbol}
+              onChange={(e) => setNFTSymbol(e.target.value)}
+              required
+            />
+          </label>
+          <div className="space"></div>
+          <label>
             <p className="head"> NFT Description : </p>
             <textarea
               value={nftDescription}
@@ -101,12 +122,12 @@ const UploadNFTForm = ({ contract }) => {
           </label>
           <div className="space"></div>
           <label>
-            <p className="head"> Price (in Matic) : </p>
+            <p className="head"> Total Supply : </p>
             <input
               className="input"
               type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={totalSupply}
+              onChange={(e) => setTotalSupply(e.target.value)}
               required
             />
           </label>
