@@ -1,4 +1,4 @@
-const contractAddress = "0xf82952f32Fd17b3dabeD5B5102513609D2c3e064";
+const contractAddress = "0xB675AA5408155d06ED9afAD339D9fCD176C99b8a";
 
 const tokenAbi = [
   {
@@ -518,6 +518,47 @@ const contractFactoryAbi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "property",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "relive",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "property",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "time",
+        type: "uint256",
+      },
+    ],
+    name: "rent",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getAllProperty",
     outputs: [
@@ -542,15 +583,28 @@ const contractFactoryAbi = [
         name: "id",
         type: "uint256",
       },
+    ],
+    name: "getRentRecord",
+    outputs: [
       {
-        internalType: "uint256",
-        name: "time",
-        type: "uint256",
+        components: [
+          {
+            internalType: "address",
+            name: "rentedBy",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "rentedTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct RentFactory.RENT",
+        name: "",
+        type: "tuple",
       },
     ],
-    name: "rent",
-    outputs: [],
-    stateMutability: "payable",
+    stateMutability: "view",
     type: "function",
   },
 ];

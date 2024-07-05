@@ -99,11 +99,12 @@ function App() {
           path="/"
           element={
             <Marketplace
-              contract={contract}
+              factoryContract={contract}
               tokenAbi={tokenAbi}
               isConnected={isConnected}
               account={account}
               signer={signer}
+              provider={provider}
             />
           }
         />

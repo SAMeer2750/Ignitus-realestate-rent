@@ -5,17 +5,17 @@ import NFTmodal from "./NFTmodal";
 import axios from "axios";
 import { ethers } from "ethers";
 
-function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
+function Marketplace({ factoryContract, tokenAbi, isConnected, account, signer, provider }) {
   const [nfts, setNfts] = useState([]);
   const [collections, setCollections] = useState([]);
   const [selectedNFT, setSelectedNFT] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (contract) {
+    if (factoryContract) {
       getAllTokenContracts();
     }
-  }, [contract, isConnected, account]);
+  }, [factoryContract, isConnected, account]);
 
   useEffect(() => {
     fetchNFTs();
@@ -23,7 +23,7 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
 
   const getAllTokenContracts = async () => {
     setIsLoading(true);
-    const tx = await contract.getAllProperty();
+    const tx = await factoryContract.getAllProperty();
     setCollections(tx);
     setIsLoading(false);
   };
@@ -60,7 +60,6 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
       collections.map(async (address,index)=>{
           const tokenInstance = await getTokenInstance(address)
           const uri = await tokenInstance.getBaseURI();
-          console.log(uri);
           const metadata = await fetchNFTMetadata(uri);
           return {metadata,address};
       })
@@ -70,13 +69,6 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
     setNfts(updatedNFTs);
     setIsLoading(false);
   };
-
-  const getOwnerOfCollection = async(tokenAddress)=>{
-    const tokenInstance = await getTokenInstance(tokenAddress)
-    const owner = await tokenInstance.ownerOf(0);
-    console.log(owner);
-    return owner;
-  }
 
   return (
     <>
@@ -114,7 +106,6 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
                           totalSupply={nft.metadata.totalSupply.toString()}
                           address={nft.address.toString()}
                           setSelectedNFT={setSelectedNFT}
-                          getOwnerOfCollection={getOwnerOfCollection}
                           nft={nft}
                         />
                       ) : null}
@@ -139,8 +130,12 @@ function Marketplace({ contract, tokenAbi, isConnected, account, signer }) {
           <>
             <NFTmodal
               nft={selectedNFT}
-              contract={contract}
+              factoryContract={factoryContract}
               setSelectedNFT={setSelectedNFT}
+              account={account}
+              tokenAbi={tokenAbi}
+              signer={signer}
+              provider={provider}
             />
             <div className="overlay" onClick={() => setSelectedNFT(null)}></div>
           </>

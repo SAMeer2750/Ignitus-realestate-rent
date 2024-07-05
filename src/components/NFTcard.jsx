@@ -9,14 +9,11 @@ function NFTcard({
   totalSupply,
   address,
   setSelectedNFT,
-  getaddressOfCollection,
   nft,
 }) {
   const handleClick = () => {
     setSelectedNFT(nft);
   };
-
-  const[owner, setOwner]= useState();
 
   return (
     <div className="NFTcard" onClick={handleClick}>
