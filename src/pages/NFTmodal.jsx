@@ -3,75 +3,21 @@ import "./NFTmodal.css";
 import { ethers } from "ethers";
 
 function NFTmodal({ nft, contract, setSelectedNFT }) {
-  const [history, setHistory] = useState([]);
-  const [isOwner, setIsOwner] = useState(false);
-  const [listed, setListed] = useState(false);
-  const [price, setPrice] = useState(null);
-  const [volume, setVolume] = useState(0);
+  // const [history, setHistory] = useState([]);
+  // const [isOwner, setIsOwner] = useState(false);
+  // const [listed, setListed] = useState(false);
+  // const [price, setPrice] = useState(null);
+  // const [volume, setVolume] = useState(0);
   const [creator, setCreator] = useState("");
 
   useEffect(() => {
-    getHistory(nft.tokenId.toString());
-    IsOwner(nft.tokenId.toString());
-    listStatus(nft.tokenId.toString());
-    getVolume(nft.tokenId.toString());
-    getTokenCreator(nft.tokenId.toString());
+    // getHistory(nft.tokenId.toString());
+    // IsOwner(nft.tokenId.toString());
+    // listStatus(nft.tokenId.toString());
+    // getVolume(nft.tokenId.toString());
+    // getTokenCreator(nft.tokenId.toString());
   }, [nft.tokenId]);
 
-  const getTokenCreator = async (tokenId) => {
-    const tx = await contract.getCreator(tokenId);
-    setCreator(tx);
-  };
-
-  const getHistory = async (tokenId) => {
-    const tx = await contract.getTokenHistory(tokenId);
-    setHistory(tx);
-  };
-
-  const getVolume = async (tokenId) => {
-    const tx = await contract.getNftVolume(tokenId);
-    setVolume(tx);
-  };
-
-  const Relist = async () => {
-    try {
-      let listingPrice = await contract.getListPrice();
-      listingPrice = listingPrice.toString();
-      const tx = await contract.reListToken(
-        nft.tokenId.toString(),
-        ethers.utils.parseEther(price),
-        { gasLimit: 900000, value: listingPrice }
-      );
-      await tx.wait();
-      window.location.reload();
-    } catch (error) {
-      console.error("Error relisting token:", error);
-    }
-  };
-
-  const IsOwner = async (tokenId) => {
-    const tx = await contract.addressChecker(tokenId);
-    setIsOwner(tx);
-  };
-
-  const listStatus = async (tokenId) => {
-    const tx = await contract.isCurrentlyListed(tokenId);
-    setListed(tx);
-  };
-
-  const handleSale = async () => {
-    try {
-      const tx = await contract.executeSale(nft.tokenId.toString(), {
-        value: nft.price.toString(),
-        gasPrice: ethers.utils.parseUnits("150", "gwei"),
-        gasLimit: 900000,
-      });
-      await tx.wait();
-      window.location.reload();
-    } catch (error) {
-      console.error("Error executing sale:", error);
-    }
-  };
 
   const convertTimestampToDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
@@ -86,31 +32,32 @@ function NFTmodal({ nft, contract, setSelectedNFT }) {
         </div>
         <div className="right">
           <p className="title">
-            {nft.metadata.name} #{nft.tokenId.toString()}
+            {nft.metadata.name.toString()} #{nft.metadata.symbol.toString()}
           </p>
 
-          <p className="address">
-            {nft.seller.toString().slice(0, 6) +
+          <p className="address">Collection: 
+            {nft.address.toString().slice(0, 6) +
               "..." +
-              nft.seller.toString().slice(38, 42)}
+              nft.address.toString().slice(38, 42)}
           </p>
           <hr />
 
           <div className="column">
             <div className="column1">
               <p className="c1Content">
-                Volume: {volume.toString() / 1000000000000000000} MATIC
+                Total Supply: {nft.metadata.totalSupply.toString()} Fractions
               </p>
               <p className="c1Content">
-                Creator: {creator.slice(0, 6) + "..." + creator.slice(38, 42)}
+                Creator: {nft.address.toString().slice(0, 6) + "..." + nft.address.toString().slice(38, 42)}
               </p>
             </div>
             <div className="column2">
               <p className="c2Content">Token Standars: ERC-721</p>
-              <p className="c2Content">Token ID: {nft.tokenId.toString()}</p>
+              <p className="c2Content">Available: {nft.metadata.totalSupply.toString()}</p>
+              {/* <p className="c2Content">Token ID: {nft.tokenId.toString()}</p> */}
             </div>
           </div>
-          <div className="buyOrSell relistItems">
+          {/* <div className="buyOrSell relistItems">
             {!isOwner ? (
               <p className="price">
                 Price: {nft.price.toString() / 1000000000000000000} MATIC
@@ -160,12 +107,12 @@ function NFTmodal({ nft, contract, setSelectedNFT }) {
                 <strong>BUY</strong>
               </button>
             )}
-          </div>
+          </div> */}
           <hr />
           <p className="description">{nft.metadata.description}</p>
         </div>
       </div>
-      <div className="lowerContent">
+      {/* <div className="lowerContent">
         <div className="history">
           <table>
             <thead>
@@ -205,7 +152,7 @@ function NFTmodal({ nft, contract, setSelectedNFT }) {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
