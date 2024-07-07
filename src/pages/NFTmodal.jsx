@@ -10,14 +10,11 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
   const [rentRecord, setRentRecord] = useState([]);
   const [available, setAvailable] = useState(0);
   const [allRented, setAllRented] = useState(false)
-  const [creator, setCreator] = useState("");
+  const [rentalStatus, setRentalStatus] = useState({});
 
   useEffect(() => {
     getOwnerOfCollection(nft.address)
     getRentRecord()
-    // listStatus(nft.tokenId.toString());
-    // getVolume(nft.tokenId.toString());
-    // getTokenCreator(nft.tokenId.toString());
   }, [account]);
 
   const getTokenInstance = async (tokenAddress)=>{
@@ -29,21 +26,34 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
     return tokenInstance;
   }
 
-  const getRentRecord = async ()=>{
-    const address = nft.address;
-    const Rentrecord = [];
-    const totalSupply = nft.metadata.totalSupply;
-    let availableToken=0
-    for (let id = 0; id< totalSupply; id++){
-      let data = await factoryContract.getRentRecord(address,id);
-      if(data.rentedTime==0)availableToken++;
-      else Rentrecord.push({data,id});
+
+  const getRentRecord = async () => {
+  const address = nft.address;
+  const Rentrecord = [];
+  const totalSupply = nft.metadata.totalSupply;
+  let availableToken = 0;
+  const rentalStatusTemp = {};
+
+  const block = await provider.getBlock('latest');
+  const blockTimestamp = block.timestamp;
+
+  for (let id = 0; id < totalSupply; id++) {
+    let data = await factoryContract.getRentRecord(address, id);
+    if (data.rentedTime == 0) {
+      availableToken++;
+    } else {
+      Rentrecord.push({ data, id });
+      rentalStatusTemp[id] = data.rentedTime <= blockTimestamp ? 'Relist' : 'Rented';
     }
-    setRentRecord(Rentrecord);
-    console.log(Rentrecord);
-    setAvailable(availableToken);
-    if(availableToken==0){setAllRented(true)}
   }
+  
+  setRentRecord(Rentrecord);
+  setRentalStatus(rentalStatusTemp);
+  setAvailable(availableToken);
+  if (availableToken == 0) {
+    setAllRented(true);
+  }
+};
 
   const getOwnerOfCollection = async(tokenAddress)=>{
     const tokenInstance = await getTokenInstance(tokenAddress)
@@ -79,19 +89,7 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
   const convertTimestampToDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleString();
-  };
-
-  const isTimeUp = async (e) => {
-      try {
-        const block = await provider.getBlock('latest');
-        const blockTimestamp = block.timestamp;
-        console.log((e-blockTimestamp));
-        if(e-blockTimestamp>0){return false}
-        else {return true}
-      } catch (error) {
-        console.error('Error fetching block timestamp:', error);
-      }
-  }  
+  }; 
 
   return (
     <div className="NFTmodal">
@@ -149,7 +147,7 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
                   />
                   <button
                     onClick={Rent}
-                    className="botton-relist update-price"
+                    className="botton-buy update-price"
                   >
                     <strong>Rent</strong>
                   </button>
@@ -197,15 +195,15 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
 
                     
 
-                    {isTimeUp(item.data.rentedTime)?(
-                      <td onClick={()=>{Relist(item.id)}}>
-                        <strong>Relist</strong>
-                      </td>
-                    ):!isTimeUp(item.data.rentedTime)?(
+                    {rentalStatus[item.id] === 'Relist' && isOwner ? (
                       <td>
-                        Rented
+                        <button onClick={() => Relist(item.id)} className="botton-relist update-price">
+                          <strong>Relist</strong>
+                        </button> 
                       </td>
-                    ):(<></>)}
+                      ) : rentalStatus[item.id] === 'Rented' && isOwner ? (
+                      <td>Rented</td>) : (<></>)
+                    }
                   </tr>
                 ))
               ):(

@@ -162,11 +162,12 @@ table{
 }
 
 .botton-relist {
-  padding-left: 33px;
-  padding-right: 33px;
-  padding-bottom: 13.5px;
-  padding-top: 13.5px;
-  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  border-radius: 20px;
+  margin-bottom: 2.5px;
   background: #FF7D00;
   border: none;
   font-family: inherit;
@@ -176,11 +177,11 @@ table{
 }
 
 .botton-relist:hover {
-  box-shadow: 7px 5px 56px -14px #FF8900;
+  box-shadow: 20px 10px 56px -14px #FF8900;
 }
 
 .botton-relist:active {
-  transform: scale(0.97);
+  transform: scale(1);
   box-shadow: 7px 5px 56px -10px #FF8900;
 }
 
@@ -197,6 +198,7 @@ input.Price-input {
   color: white;
   font-size: 2vh;
   text-align: center;
+  margin-right: 10px;
 }
 
 .NFTmodal .upperContent .right .relistItems{
