@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.6.0;
+pragma experimental ABIEncoderV2;
 
 import {RentTokens} from "contracts/rent.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract RentFactory{
 
@@ -11,9 +11,19 @@ contract RentFactory{
         _;
     }
 
+    modifier Rented(address add, uint256 id){
+        require(rented[add][id], "not rented");
+        _;
+    }
+
+    struct RENT{
+        address rentedBy;
+        uint256 rentedTime;
+    }
+
     address[] private rentTokenContracts;
     mapping (address => mapping (uint256 => bool)) private rented;
-    mapping (address => mapping (uint256 => uint256)) private rentedTime;
+    mapping (address => mapping (uint256 => RENT)) private rentRecord;
     uint256 constant EXCHANGE_RATE = 2;
     uint256 constant EXCHANGE_Precision = 1e2;
 
@@ -26,17 +36,39 @@ contract RentFactory{
     }
 
     function rent(address property, uint256 id, uint256 time) external payable  NotRented(property,id) {
+        // require(time > 86399, "time");
         rented[property][id]=true;
-        rentedTime[property][id]=block.timestamp + time;
+        rentRecord[property][id]=RENT(msg.sender, (block.timestamp + time));
+
+        uint256 price = getCalculatedPrice(time);
+        require(msg.value >= price, "not enough balance");
+        
         address owner = address(RentTokens(property).ownerOf(id));
-        uint256 price = (time * EXCHANGE_RATE) / EXCHANGE_Precision;
         (bool sent, ) = payable(owner).call{value: price}("");
         require(sent, "Failed to send Ether");
 
     }
 
+
+    function relive(address property, uint256 id) external Rented(property,id) {
+        require(msg.sender == address(RentTokens(property).ownerOf(id)),"Not owner");
+        require(block.timestamp > rentRecord[property][id].rentedTime, "Not time");
+        
+        rented[property][id]=false;
+        rentRecord[property][id]=(RENT(address(0), 0));
+    }
+
+    function getCalculatedPrice(uint256 time)internal pure  returns(uint256){
+        uint256 price = (time * EXCHANGE_RATE) / EXCHANGE_Precision;
+        return price;
+    }
+
     function getAllProperty() external view returns (address[]memory){
         return rentTokenContracts;        
+    }
+
+    function getRentRecord(address property, uint256 id)external view returns (RENT memory){
+        return rentRecord[property][id];
     }
 
 }
