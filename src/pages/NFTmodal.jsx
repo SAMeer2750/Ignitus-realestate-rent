@@ -11,10 +11,13 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
   const [available, setAvailable] = useState(0);
   const [allRented, setAllRented] = useState(false)
   const [rentalStatus, setRentalStatus] = useState({});
+  const [price, setPrice] = useState(0)
+  const [ETHvalue, setETHvalue] = useState(0)
 
   useEffect(() => {
     getOwnerOfCollection(nft.address)
     getRentRecord()
+    getLatestPriceOfEthInUsd()
   }, [account]);
 
   const getTokenInstance = async (tokenAddress)=>{
@@ -26,6 +29,16 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
     return tokenInstance;
   }
 
+  const getLatestPriceOfEthInUsd = async () => {
+    const oneEthInUds = await factoryContract.getLatestPrice();
+    setETHvalue(parseInt(oneEthInUds.toString()));
+  }
+
+  const getRentInEth = (e)=>{
+    const x = (e * 1e8 * 1e18 )/ ETHvalue
+    console.log(x)
+    return x
+  } 
 
   const getRentRecord = async () => {
   const address = nft.address;
@@ -66,18 +79,19 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
 
   const Rent = async()=>{
     const time = days * 86400
-    const price = (time * 2) / 100
-    console.log(price);
+    const rentAmt = getRentInEth(price)
+    console.log(rentAmt);
     const tx = await factoryContract.rent(
       nft.address,
       id,
       time,
-      { gasLimit: 900000, value: price }
+      { gasLimit: 900000, value: rentAmt }
     )
     await tx.wait();
     setDays("")
     setId("")
     getRentRecord()
+    setPrice(0)
   }
 
   const Relist = async (id)=>{
@@ -123,6 +137,11 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
               <p className="c2Content">Available to rent: {available.toString()}</p>
             </div>
           </div>
+          {
+            !isOwner && (price!=0) ? (<>
+            <p>Price: {(getRentInEth(price)/1e18).toFixed(5)} Ξ | {price} USD</p>
+            </>):(<></>)
+          }
           <div className="buyOrSell relistItems">
             {!isOwner && !allRented ? (
               <>
@@ -134,7 +153,10 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
                     id=""
                     placeholder="Enter days"
                     value={days}
-                    onChange={(e) => setDays(e.target.value)}
+                    onChange={(e) => {
+                      setDays(e.target.value);
+                      setPrice((e.target.value)*10)
+                    }}
                   />
                   <input
                     className="Price-input"
