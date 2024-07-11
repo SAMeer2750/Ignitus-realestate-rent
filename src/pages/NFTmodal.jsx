@@ -36,8 +36,8 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
 
   const getRentInEth = (e)=>{
     const x = (e * 1e8 * 1e18 )/ ETHvalue
-    console.log(x)
-    return x
+    console.log(Math.round(x))
+    return Math.round(x)
   } 
 
   const getRentRecord = async () => {
