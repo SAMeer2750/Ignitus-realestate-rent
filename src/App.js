@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import UploadNFTForm from "./pages/UploadNFTForm";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/navbar";
-import { contractAddress, tokenAbi, contractFactoryAbi } from "./constant";
+import {
+  Sepholia_ContractAddress,
+  tokenAbi,
+  contractFactoryAbi,
+  PolyZkEVM_ContractAddress,
+} from "./constant";
 import { ethers } from "ethers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -13,6 +18,7 @@ function App() {
   const [signer, setSigner] = useState(null);
   const [contract, setContract] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [network, setNetwork] = useState(null)
 
   useEffect(() => {
     loadBcData();
@@ -42,12 +48,34 @@ function App() {
       setProvider(provider);
       const signer = provider.getSigner();
       setSigner(signer);
-      const contractInstance = new ethers.Contract(
-        contractAddress,
-        contractFactoryAbi,
-        signer
-      );
-      setContract(contractInstance);
+      const { chainId } = await provider.getNetwork();
+      let contractInstance;
+      if(chainId==11155111){
+        contractInstance = new ethers.Contract(
+          Sepholia_ContractAddress,
+          contractFactoryAbi,
+          signer
+        );
+        setContract(contractInstance);
+        setNetwork("Seph");
+        console.log("connected to:", chainId, "(Seph)");
+        // alert(`You have connected to Sepholia | Chain ID: ${chainId}`);
+      }
+      else if(chainId==2442){
+        contractInstance = new ethers.Contract(
+          PolyZkEVM_ContractAddress,
+          contractFactoryAbi,
+          signer
+        );
+        setContract(contractInstance);
+        setNetwork("PolyZk");
+        console.log("connected to:", chainId, "(PolyZkEVM)");
+        // alert(`You have connected to Polygon ZkEVM | Chain ID: ${chainId}`);
+      }
+      else{        
+        setNetwork("");
+        alert(`Unsupported network with chain ID: ${chainId}. Change the network to Polygon ZkEVM or Sepholia`);
+      }
     }
   }
 
@@ -92,7 +120,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar connectWallet={connectWallet} account={account} />
+      <Navbar connectWallet={connectWallet} account={account} network={network}/>
 
       <Routes>
         <Route

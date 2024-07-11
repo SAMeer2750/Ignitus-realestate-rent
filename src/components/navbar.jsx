@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import logo from "../components/imgs/logo.png";
 
-function Navbar({ connectWallet, account }) {
+function Navbar({ connectWallet, account, network }) {
   return (
     <div className="navbar">
       <nav>
@@ -35,6 +35,7 @@ function Navbar({ connectWallet, account }) {
           </Link>
           {account ? (
             <button class="btn" type="button">
+              <div id="network">{network}</div>
               <strong>
                 {account.slice(0, 6) + "..." + account.slice(38, 42)}
               </strong>

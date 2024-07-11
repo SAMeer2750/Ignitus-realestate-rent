@@ -1,4 +1,6 @@
-const contractAddress = "0xF52a48839A3EA26183a72e31c025A4D151cfB845";
+const Sepholia_ContractAddress = "0xF52a48839A3EA26183a72e31c025A4D151cfB845";
+
+const PolyZkEVM_ContractAddress = "0x85b22cDE84CF4Cb16080cB2e5a5f3BCf84240eF4";
 
 const tokenAbi = [
   {
@@ -641,4 +643,9 @@ const contractFactoryAbi = [
   },
 ];
 
-export { contractAddress, tokenAbi, contractFactoryAbi };
+export {
+  Sepholia_ContractAddress,
+  PolyZkEVM_ContractAddress,
+  tokenAbi,
+  contractFactoryAbi,
+};
