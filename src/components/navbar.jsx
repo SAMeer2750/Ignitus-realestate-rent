@@ -35,7 +35,7 @@ function Navbar({ connectWallet, account, network }) {
           </Link>
           {account ? (
             <button class="btn" type="button">
-              <div id="network">{network}</div>
+              {network != ""?(<div id="network">{network}</div>):(<></>)}
               <strong>
                 {account.slice(0, 6) + "..." + account.slice(38, 42)}
               </strong>
