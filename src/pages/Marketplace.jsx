@@ -5,7 +5,7 @@ import NFTmodal from "./NFTmodal";
 import axios from "axios";
 import { ethers } from "ethers";
 
-function Marketplace({ factoryContract, tokenAbi, isConnected, account, signer, provider }) {
+function Marketplace({ factoryContract, tokenAbi, isConnected, account, signer, provider, network }) {
   const [nfts, setNfts] = useState([]);
   const [collections, setCollections] = useState([]);
   const [selectedNFT, setSelectedNFT] = useState(null);
@@ -131,7 +131,7 @@ function Marketplace({ factoryContract, tokenAbi, isConnected, account, signer, 
             <NFTmodal
               nft={selectedNFT}
               factoryContract={factoryContract}
-              setSelectedNFT={setSelectedNFT}
+              network={network}
               account={account}
               tokenAbi={tokenAbi}
               signer={signer}

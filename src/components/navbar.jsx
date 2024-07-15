@@ -8,9 +8,12 @@ import {
   useRouteMatch,
   useParams,
 } from "react-router-dom";
+import { ReactSVG } from "react-svg";
 import logo from "../components/imgs/logo.png";
+import polygonmatic from "../components/imgs/polygon-matic.svg"
+import ether from "../components/imgs/ether-crypto.svg"
 
-function Navbar({ connectWallet, account, network }) {
+function Navbar({ connectWallet, account, network, setShowModal }) {
   return (
     <div className="navbar">
       <nav>
@@ -35,7 +38,13 @@ function Navbar({ connectWallet, account, network }) {
           </Link>
           {account ? (
             <button class="btn" type="button">
-              {network != ""?(<div id="network">{network}</div>):(<></>)}
+              {network == "Seph"?(<div id="network" onClick={()=>{setShowModal(true)}}>
+                <div className="networkN">Sepolia</div>
+                <div>{<ReactSVG src={ether}/>}</div>
+              </div>):network == "Poly Amoy"?(<div id="network" onClick={()=>{setShowModal(true)}}>
+                <div className="networkN">{network}</div>
+                <div>{<ReactSVG src={polygonmatic}/>}</div>
+              </div>):(<></>)}
               <strong>
                 {account.slice(0, 6) + "..." + account.slice(38, 42)}
               </strong>

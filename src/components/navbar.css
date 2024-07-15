@@ -32,7 +32,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 16rem;
+  width: 18rem;
   height: 3rem;
   background-size: 300% 300%;
   backdrop-filter: blur(1rem);
@@ -56,23 +56,32 @@
 .navbar .btn #network{
   font-size: 14px;
   margin-right: 5px;
-  padding: 5px 10px 5px 10px;
+  padding: 2px 10px 2px 10px;
   background-color: #212121;
+  width:max-content;
   border-radius: 90px;
   transition: 0.5s;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
   z-index: 5;
 }
 
 .navbar .btn:hover #network{
+  transform: scale(1);
   font-size: 14px;
   color: #212121;
   z-index: 2;
   transition: 0.5s;
   margin-right: 5px;
-  padding: 5px 10px 5px 10px;
+  padding: 2px 10px 2px 10px;
   background-color: #fff;
   border-radius: 90px;
   font-weight: 600;
+}
+
+.navbar .btn #network .networkN {
+  margin-right: 5px;
 }
 
 .navbar #container-stars {
@@ -123,7 +132,7 @@
 }
 
 .navbar .btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .navbar .btn:active {

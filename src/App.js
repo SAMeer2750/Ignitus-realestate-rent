@@ -22,7 +22,6 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState(null)
   const [showModal, setShowModal] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
 
   useEffect(() => {
     loadBcData();
@@ -130,6 +129,7 @@ function App() {
         connectWallet={connectWallet}
         account={account}
         network={network}
+        setShowModal={setShowModal}
       />
 
       <Routes>
@@ -143,6 +143,7 @@ function App() {
               account={account}
               signer={signer}
               provider={provider}
+              network={network}
             />
           }
         />
@@ -163,6 +164,7 @@ function App() {
               Switch to Polygon Amoy
             </button>
           </div>
+          <div className="overlay" onClick={() => setShowModal(false)}></div>
         </div>
       )}
     </div>

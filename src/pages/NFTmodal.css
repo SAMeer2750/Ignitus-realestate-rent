@@ -45,11 +45,16 @@
   margin-bottom: 1vh;
 }
 
-.NFTmodal .upperContent .right p.price{
+.NFTmodal .upperContent .right .price{
+  display: flex;
   font-weight: 610;
   font-size: 1.5rem;
   margin-top: 0vh;
   margin-bottom: 0;
+}
+
+.NFTmodal .upperContent .right .price .priceSymbol{
+  margin: 3px 6px 0 1px
 }
 
 .NFTmodal .upperContent .right .column{

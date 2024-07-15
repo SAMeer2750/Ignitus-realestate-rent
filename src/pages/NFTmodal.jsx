@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./NFTmodal.css";
 import { ethers } from "ethers";
+import { ReactSVG } from "react-svg";
+import polygonmatic from "../components/imgs/polygon-matic.svg"
+import ether from "../components/imgs/ether-crypto.svg"
 
-function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, signer, provider }) {
+function NFTmodal({ nft, factoryContract, network, account, tokenAbi, signer, provider }) {
   const [isOwner, setIsOwner] = useState(false);
   const [id, setId] = useState();
   const [days, setDays] = useState();
@@ -139,7 +142,11 @@ function NFTmodal({ nft, factoryContract, setSelectedNFT, account, tokenAbi, sig
           </div>
           {
             !isOwner && (price!=0) ? (<>
-            <p>Price: {(getRentInEth(price)/1e18).toFixed(5)} Ξ | {price} USD</p>
+            <div className="price">Price: {(getRentInEth(price)/1e18).toFixed(5)} {network == "Seph"?(<div>
+                <div className="priceSymbol"><ReactSVG src={ether}/></div>
+              </div>):network == "Poly Amoy"?(<div>
+                <div className="priceSymbol"><ReactSVG src={polygonmatic}/></div>
+              </div>):(<></>)} | {price} USD</div>
             </>):(<></>)
           }
           <div className="buyOrSell relistItems">
