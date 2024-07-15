@@ -2,6 +2,33 @@ const Sepholia_ContractAddress = "0xF52a48839A3EA26183a72e31c025A4D151cfB845";
 
 const PolyZkEVM_ContractAddress = "0x85b22cDE84CF4Cb16080cB2e5a5f3BCf84240eF4";
 
+const PloyAmoy_ContractAddress = "0x85b22cDE84CF4Cb16080cB2e5a5f3BCf84240eF4";
+
+const networks = {
+  sepholia: {
+    chainId: `0x${Number(11155111).toString(16)}`,
+    chainName: "Sepholia",
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrls: ["https://1rpc.io/sepolia"],
+    blockExplorerUrls: ["https://sepholia.etherscan.io"],
+  },
+  polygonAmoy: {
+    chainId: `0x${Number(80002).toString(16)}`,
+    chainName: "Polygon Amoy",
+    nativeCurrency: {
+      name: "MATIC",
+      symbol: "MATIC",
+      decimals: 18,
+    },
+    rpcUrls: ["https://polygon-amoy.drpc.org"],
+    blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+  },
+};
+
 const tokenAbi = [
   {
     inputs: [
@@ -646,6 +673,8 @@ const contractFactoryAbi = [
 export {
   Sepholia_ContractAddress,
   PolyZkEVM_ContractAddress,
+  PloyAmoy_ContractAddress,
   tokenAbi,
   contractFactoryAbi,
+  networks,
 };

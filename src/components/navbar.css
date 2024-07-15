@@ -60,6 +60,7 @@
   background-color: #212121;
   border-radius: 90px;
   transition: 0.5s;
+  z-index: 5;
 }
 
 .navbar .btn:hover #network{

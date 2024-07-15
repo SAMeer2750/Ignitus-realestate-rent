@@ -7,7 +7,9 @@ import {
   Sepholia_ContractAddress,
   tokenAbi,
   contractFactoryAbi,
+  PloyAmoy_ContractAddress,
   PolyZkEVM_ContractAddress,
+  networks,
 } from "./constant";
 import { ethers } from "ethers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -19,25 +21,13 @@ function App() {
   const [contract, setContract] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState(null)
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNetwork, setSelectedNetwork] = useState(null);
 
   useEffect(() => {
     loadBcData();
     setupAccountChangeHandler();
   }, []);
-
-  // const networks = {
-  //   polygon: {
-  //     chainId: `0x${Number(80001).toString(16)}`,
-  //     chainName: "Polygon Testnet",
-  //     nativeCurrency: {
-  //       name: "MATIC",
-  //       symbol: "MATIC",
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
-  //     blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
-  //   },
-  // };
 
   async function loadBcData() {
     if (window.ethereum) {
@@ -61,21 +51,37 @@ function App() {
         console.log("connected to:", chainId, "(Seph)");
         // alert(`You have connected to Sepholia | Chain ID: ${chainId}`);
       }
-      else if(chainId==2442){
+      else if (chainId == 80002) {
         contractInstance = new ethers.Contract(
-          PolyZkEVM_ContractAddress,
+          PloyAmoy_ContractAddress,
           contractFactoryAbi,
           signer
         );
         setContract(contractInstance);
-        setNetwork("PolyZk");
-        console.log("connected to:", chainId, "(PolyZkEVM)");
+        setNetwork("Poly Amoy");
+        console.log("connected to:", chainId, "(Polygon Amoy)");
         // alert(`You have connected to Polygon ZkEVM | Chain ID: ${chainId}`);
-      }
-      else{        
+      } else {
         setNetwork("");
-        alert(`Unsupported network with chain ID: ${chainId}. Change the network to Polygon ZkEVM or Sepholia`);
+        setShowModal(true);
+        // alert(
+        //   `Unsupported network with chain ID: ${chainId}. Change the network to Polygon ZkEVM or Sepholia`
+        // );
       }
+    }
+  }
+
+  async function switchNetwork(networkKey) {
+    const networkData = networks[networkKey];
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [networkData],
+      });
+      setShowModal(false); // Hide modal after network switch
+      loadBcData(); // Reload blockchain data after network switch
+    } catch (error) {
+      console.log("Failed to switch network", error);
     }
   }
 
@@ -120,7 +126,11 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar connectWallet={connectWallet} account={account} network={network}/>
+      <Navbar
+        connectWallet={connectWallet}
+        account={account}
+        network={network}
+      />
 
       <Routes>
         <Route
@@ -136,21 +146,25 @@ function App() {
             />
           }
         />
-        {/* <Route
-          path="/MyNFTs"
-          element={
-            <MyNFTs
-              contract={contract}
-              isConnected={isConnected}
-              account={account}
-            />
-          }
-        /> */}
         <Route
           path="/UploadNFTForm"
           element={<UploadNFTForm contract={contract} />}
         />
       </Routes>
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Unsupported Network</h2>
+            <p>Please switch to a supported network:</p>
+            <button onClick={() => switchNetwork("sepholia")}>
+              Switch to Sepholia
+            </button>
+            <button onClick={() => switchNetwork("polygonAmoy")}>
+              Switch to Polygon Amoy
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
